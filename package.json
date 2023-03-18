@@ -11,7 +11,8 @@
     "lint:fix": "npm run lint -- --fix",
     "prettier": "npx prettier src --check",
     "prettier:fix": "npm run prettier -- --write",
-    "format": "npm run prettier:fix && npm run lint:fix"
+    "format": "npm run prettier:fix && npm run lint:fix",
+    "prepare": "husky install"
   },
   "husky": {
     "hooks": {
@@ -19,7 +20,12 @@
     }
   },
   "lint-staged": {
-    "*": "format"
+    "linters": {
+      "*.ts": [
+        "npm run lint",
+        "git add"
+      ]
+    }
   },
   "dependencies": {
     "react": "^18.2.0",
