@@ -10,7 +10,7 @@ class Card extends React.PureComponent<CardsProps> {
     const { car } = this.props;
     const { brand, model, production, price, src } = car;
     return (
-      <div className="card">
+      <div className="card" data-testid="car-card">
         <div className="card-thumbnail">
           <img src={src} alt="no image" />
         </div>
