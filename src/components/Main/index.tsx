@@ -1,9 +1,35 @@
 import React from 'react';
 import CardList from '../CardList';
-import { CARS } from '../../mockedData';
-class Main extends React.PureComponent {
+import SearchBar from '../SearchBar';
+import { CARS } from '../../data';
+import { LOCAL_STORAGE_SEARCH_KEY } from '../../constants';
+
+interface CardListState {
+  search: string;
+}
+
+class Main extends React.PureComponent<object, CardListState> {
+  constructor(props: object) {
+    super(props);
+
+    this.state = {
+      search: localStorage.getItem(LOCAL_STORAGE_SEARCH_KEY) || '',
+    };
+
+    this.onSetFilter = this.onSetFilter.bind(this);
+  }
+
+  onSetFilter(search: string) {
+    this.setState({ search });
+  }
   render() {
-    return <CardList cards={CARS} />;
+    const { search } = this.state;
+    return (
+      <>
+        <SearchBar onSetFilter={this.onSetFilter} />
+        <CardList filter={search} cards={CARS} />
+      </>
+    );
   }
 }
 

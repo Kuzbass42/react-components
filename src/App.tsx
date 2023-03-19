@@ -1,17 +1,13 @@
-import { Routes, Route } from 'react-router-dom';
+import Header from './components/Header';
+import routes from './routes';
+
 import './App.css';
-import NoMatch from './components/NoMatch';
-import AboutUs from './components/AboutUs';
-import MainPage from './components/Main';
 
 function App() {
   return (
     <div className="App">
-      <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="about" element={<AboutUs />} />
-        <Route path="*" element={<NoMatch />} />
-      </Routes>
+      <Header />
+      {routes}
     </div>
   );
 }

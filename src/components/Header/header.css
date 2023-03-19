@@ -1,0 +1,13 @@
+.header {
+  display: flex;
+  justify-content: end;
+  height: 30px;
+}
+
+.header a {
+  padding: 0 15px;
+}
+
+.header a.active {
+  background-color: darkgray;
+}
