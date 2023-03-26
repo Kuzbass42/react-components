@@ -11,16 +11,18 @@ class Header extends React.Component<WithRouterProps> {
 
     const isHomePath = pathname === '/';
     const isAboutPath = pathname === '/about';
+    const isAddCardPath = pathname === '/create';
 
     return (
       <div className="header">
         <Link className={isHomePath ? 'active' : ''} to="/">
-          {' '}
-          HOME{' '}
+          HOME
+        </Link>
+        <Link className={isAddCardPath ? 'active' : ''} to="/create">
+          Add card
         </Link>
         <Link className={isAboutPath ? 'active' : ''} to="/about">
-          {' '}
-          ABOUT US{' '}
+          ABOUT US
         </Link>
       </div>
     );

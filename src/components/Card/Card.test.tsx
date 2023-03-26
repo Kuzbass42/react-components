@@ -10,10 +10,8 @@ describe('Car Card component', () => {
     render(<Card car={car} />);
 
     const carName = screen.getByText(`${car.brand} ${car.model}`);
-    const carPrice = screen.getByText(car.price);
-    const carProduction = screen.getByText(car.production);
+    const carProduction = screen.getByText(car.productionDate);
     expect(carName).toBeInTheDocument();
-    expect(carPrice).toBeInTheDocument();
     expect(carProduction).toBeInTheDocument();
   });
 });

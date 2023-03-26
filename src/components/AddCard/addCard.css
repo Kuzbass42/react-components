@@ -1,0 +1,16 @@
+.field {
+    display: flex;
+    width: 40%;
+    margin-bottom: 10px;
+    flex-direction: column;
+    text-align: left;
+}
+
+.checkbox {
+    width: 13px;
+    margin: 0;
+}
+
+.card-list {
+    margin-top: 20px;
+}
