@@ -100,11 +100,11 @@ class AddCard extends React.Component<object, AddCardState> {
     const validationErrors = {} as ValidationErrors;
 
     if (this.modelInput.current?.value === '') {
-      validationErrors.model = 'This field is mandatory';
+      validationErrors.model = 'Model field is mandatory';
     }
 
     if (this.brandInput.current?.value === '') {
-      validationErrors.brand = 'This field is mandatory';
+      validationErrors.brand = 'Brand field is mandatory';
     }
 
     const files = this.fileInput.current?.files;
@@ -117,7 +117,7 @@ class AddCard extends React.Component<object, AddCardState> {
       : [];
 
     if (unsupportedFiles.length > 0) {
-      validationErrors.files = 'Supported file types jpeg, jpg and png';
+      validationErrors.files = 'Supported file types are jpeg, jpg and png';
     }
 
     return validationErrors;
@@ -187,12 +187,12 @@ class AddCard extends React.Component<object, AddCardState> {
         <form onSubmit={this.submitCard}>
           <div className="field">
             <div>Model</div>
-            <input type="text" ref={this.modelInput} />
+            <input type="text" ref={this.modelInput} data-testid="model-input" />
             {model && <span className="validationError">{model}</span>}
           </div>
           <div className="field">
             <div>Brand</div>
-            <input type="text" ref={this.brandInput} />
+            <input type="text" ref={this.brandInput} data-testid="brand-input" />
             {brand && <span className="validationError">{brand}</span>}
           </div>
           <div className="field">
