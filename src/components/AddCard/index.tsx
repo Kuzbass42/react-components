@@ -14,6 +14,7 @@ interface ValidationErrors {
 interface AddCardState {
   cards: Car[];
   validationErrors: ValidationErrors;
+  isSaved: boolean;
 }
 class AddCard extends React.Component<object, AddCardState> {
   private readonly modelInput: React.RefObject<HTMLInputElement>;
@@ -44,6 +45,7 @@ class AddCard extends React.Component<object, AddCardState> {
     this.validateForm = this.validateForm.bind(this);
 
     this.state = {
+      isSaved: false,
       cards: [],
       validationErrors: {} as ValidationErrors,
     };
@@ -145,10 +147,14 @@ class AddCard extends React.Component<object, AddCardState> {
       src: file ? URL.createObjectURL(file) : '',
     };
 
-    this.setState({
-      cards: [...this.state.cards, carCard],
-      validationErrors: {} as ValidationErrors,
-    });
+    this.setState(
+      {
+        isSaved: true,
+        cards: [...this.state.cards, carCard],
+        validationErrors: {} as ValidationErrors,
+      },
+      () => setTimeout(() => this.setState({ isSaved: false }), 2000)
+    );
 
     if (this.modelInput.current) {
       this.modelInput.current.value = '';
@@ -179,11 +185,12 @@ class AddCard extends React.Component<object, AddCardState> {
     }
   }
   render() {
-    const { cards, validationErrors } = this.state;
+    const { cards, validationErrors, isSaved } = this.state;
     const { brand, model, files } = validationErrors;
 
     return (
       <>
+        {isSaved && <span className="confirmation-message">The data has been saved</span>}
         <form onSubmit={this.submitCard}>
           <div className="field">
             <div>Model</div>

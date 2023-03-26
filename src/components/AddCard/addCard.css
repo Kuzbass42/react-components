@@ -19,3 +19,8 @@
   color: red;
   font-size: 12px;
 }
+
+.confirmation-message {
+  color: green;
+  position: absolute;
+}
