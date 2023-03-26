@@ -1,13 +1,19 @@
 import React from 'react';
 import { v4 as uuid } from 'uuid';
-import { CAR_COLORS, CAR_PAYMENT_TYPE } from '../../constants';
+import { CAR_COLORS, CAR_PAYMENT_TYPE, SUPPORTED_FILE_NAMES } from '../../constants';
 import CardList from '../CardList';
 import { Car } from '../../models';
 
 import './addCard.css';
 
+interface ValidationErrors {
+  model: string;
+  brand: string;
+  files: string;
+}
 interface AddCardState {
   cards: Car[];
+  validationErrors: ValidationErrors;
 }
 class AddCard extends React.Component<object, AddCardState> {
   private readonly modelInput: React.RefObject<HTMLInputElement>;
@@ -35,9 +41,11 @@ class AddCard extends React.Component<object, AddCardState> {
     this.submitCard = this.submitCard.bind(this);
     this.onChangePaymentType = this.onChangePaymentType.bind(this);
     this.getPaymentType = this.getPaymentType.bind(this);
+    this.validateForm = this.validateForm.bind(this);
 
     this.state = {
       cards: [],
+      validationErrors: {} as ValidationErrors,
     };
   }
 
@@ -87,7 +95,42 @@ class AddCard extends React.Component<object, AddCardState> {
         break;
     }
   }
+
+  validateForm(): ValidationErrors {
+    const validationErrors = {} as ValidationErrors;
+
+    if (this.modelInput.current?.value === '') {
+      validationErrors.model = 'This field is mandatory';
+    }
+
+    if (this.brandInput.current?.value === '') {
+      validationErrors.brand = 'This field is mandatory';
+    }
+
+    const files = this.fileInput.current?.files;
+    const unsupportedFiles = files
+      ? Object.values(files).filter((file) => {
+          const extension = file.name.split('.').pop() || '';
+
+          return !extension || !SUPPORTED_FILE_NAMES.includes(extension.toLowerCase());
+        })
+      : [];
+
+    if (unsupportedFiles.length > 0) {
+      validationErrors.files = 'Supported file types jpeg, jpg and png';
+    }
+
+    return validationErrors;
+  }
   submitCard(event: React.FormEvent<HTMLFormElement>): void {
+    event.preventDefault();
+    const validationErrors = this.validateForm();
+    const { brand, model, files: filesError } = validationErrors;
+
+    if (!!brand || !!model || !!filesError) {
+      return this.setState({ validationErrors });
+    }
+
     const files = this.fileInput.current?.files;
     const file = files && files.length > 0 ? files[0] : null;
 
@@ -102,7 +145,10 @@ class AddCard extends React.Component<object, AddCardState> {
       src: file ? URL.createObjectURL(file) : '',
     };
 
-    this.setState({ cards: [...this.state.cards, carCard] });
+    this.setState({
+      cards: [...this.state.cards, carCard],
+      validationErrors: {} as ValidationErrors,
+    });
 
     if (this.modelInput.current) {
       this.modelInput.current.value = '';
@@ -131,20 +177,23 @@ class AddCard extends React.Component<object, AddCardState> {
     if (this.fileInput.current) {
       this.fileInput.current.value = '';
     }
-
-    event.preventDefault();
   }
   render() {
+    const { cards, validationErrors } = this.state;
+    const { brand, model, files } = validationErrors;
+
     return (
       <>
         <form onSubmit={this.submitCard}>
           <div className="field">
             <div>Model</div>
             <input type="text" ref={this.modelInput} />
+            {model && <span className="validationError">{model}</span>}
           </div>
           <div className="field">
             <div>Brand</div>
             <input type="text" ref={this.brandInput} />
+            {brand && <span className="validationError">{brand}</span>}
           </div>
           <div className="field">
             <div>Production Date</div>
@@ -201,10 +250,11 @@ class AddCard extends React.Component<object, AddCardState> {
           <div className="field">
             <span>Upload preview</span>
             <input type="file" multiple={false} ref={this.fileInput} />
+            {files && <span className="validationError">{files}</span>}
           </div>
           <input type="submit" value="SUBMIT" />
         </form>
-        <CardList cards={this.state.cards} />
+        <CardList cards={cards} />
       </>
     );
   }
