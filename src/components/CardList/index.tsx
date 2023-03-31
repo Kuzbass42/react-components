@@ -9,24 +9,19 @@ interface CardListProps {
   cards: Car[];
   filter?: string;
 }
-class CardList extends React.PureComponent<CardListProps> {
-  render() {
-    const { cards, filter = '' } = this.props;
-
-    return (
-      <div className="card-list">
-        {!cards ||
-          (cards.length === 0 && <span className="no-card">There is no any card yet</span>)}
-        {cards
-          .filter(({ model, brand }) => {
-            return searchString(model, filter, true) || searchString(brand, filter, true);
-          })
-          .map((car) => (
-            <Card key={car.id} car={car} />
-          ))}
-      </div>
-    );
-  }
-}
+const CardList: React.FunctionComponent<CardListProps> = ({ cards, filter = '' }) => {
+  return (
+    <div className="card-list">
+      {!cards || (cards.length === 0 && <span className="no-card">There is no any card yet</span>)}
+      {cards
+        .filter(({ model, brand }) => {
+          return searchString(model, filter, true) || searchString(brand, filter, true);
+        })
+        .map((car) => (
+          <Card key={car.id} car={car} />
+        ))}
+    </div>
+  );
+};
 
 export default CardList;

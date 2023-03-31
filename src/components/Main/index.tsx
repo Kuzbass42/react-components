@@ -4,33 +4,17 @@ import SearchBar from '../SearchBar';
 import { CARS } from '../../data';
 import { LOCAL_STORAGE_SEARCH_KEY } from '../../constants';
 
-interface CardListState {
-  search: string;
-}
+const Main: React.FunctionComponent = () => {
+  const [filter, setFilter] = React.useState(localStorage.getItem(LOCAL_STORAGE_SEARCH_KEY) || '');
 
-class Main extends React.PureComponent<object, CardListState> {
-  constructor(props: object) {
-    super(props);
+  const onSetFilter = (filter: string) => setFilter(filter);
 
-    this.state = {
-      search: localStorage.getItem(LOCAL_STORAGE_SEARCH_KEY) || '',
-    };
-
-    this.onSetFilter = this.onSetFilter.bind(this);
-  }
-
-  onSetFilter(search: string) {
-    this.setState({ search });
-  }
-  render() {
-    const { search } = this.state;
-    return (
-      <>
-        <SearchBar onSetFilter={this.onSetFilter} />
-        <CardList filter={search} cards={CARS} />
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <SearchBar filter={filter} onSetFilter={onSetFilter} />
+      <CardList filter={filter} cards={CARS} />
+    </>
+  );
+};
 
 export default Main;

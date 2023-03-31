@@ -4,45 +4,30 @@ import { LOCAL_STORAGE_SEARCH_KEY, SEARCH_BAR_PLACEHOLDER } from '../../constant
 import './searchBar.css';
 
 interface SearchBarProps {
+  filter: string;
   onSetFilter: (search: string) => void;
 }
-interface SearchBarState {
-  search: string;
-}
-class SearchBar extends React.PureComponent<SearchBarProps, SearchBarState> {
-  constructor(props: SearchBarProps) {
-    super(props);
+const SearchBar: React.FunctionComponent<SearchBarProps> = ({ filter, onSetFilter }) => {
+  const filterRef = React.useRef(filter);
 
-    this.state = {
-      search: localStorage.getItem(LOCAL_STORAGE_SEARCH_KEY) || '',
-    };
+  React.useEffect(() => {
+    filterRef.current = filter;
+  }, [filter]);
 
-    this.onChange = this.onChange.bind(this);
-  }
+  React.useEffect(() => {
+    return () => localStorage.setItem(LOCAL_STORAGE_SEARCH_KEY, filterRef.current || '');
+  }, []);
 
-  onChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const { onSetFilter } = this.props;
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => onSetFilter(event.target.value);
 
-    onSetFilter(event.target.value);
-    this.setState({ search: event.target.value });
-  }
-
-  componentWillUnmount() {
-    const { search } = this.state;
-    localStorage.setItem(LOCAL_STORAGE_SEARCH_KEY, search);
-  }
-  render() {
-    const { search } = this.state;
-
-    return (
-      <input
-        className="search-bar"
-        value={search}
-        onChange={this.onChange}
-        placeholder={SEARCH_BAR_PLACEHOLDER}
-      />
-    );
-  }
-}
+  return (
+    <input
+      className="search-bar"
+      value={filter}
+      onChange={onChange}
+      placeholder={SEARCH_BAR_PLACEHOLDER}
+    />
+  );
+};
 
 export default SearchBar;
