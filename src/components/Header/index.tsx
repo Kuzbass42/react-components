@@ -1,12 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { withRouter, WithRouterProps } from '../../HOC';
+import { Link, useLocation } from 'react-router-dom';
 
 import './header.css';
-const Header: React.FunctionComponent<WithRouterProps> = (props) => {
-  const {
-    location: { pathname },
-  } = props;
+const Header: React.FunctionComponent = () => {
+  const { pathname } = useLocation();
 
   const isHomePath = pathname === '/';
   const isAboutPath = pathname === '/about';
@@ -27,4 +24,4 @@ const Header: React.FunctionComponent<WithRouterProps> = (props) => {
   );
 };
 
-export default withRouter(Header);
+export default Header;
