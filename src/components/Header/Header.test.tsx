@@ -13,5 +13,11 @@ describe('Header component', () => {
 
     const aboutUs = screen.getByText(/about us/i);
     expect(aboutUs).toBeInTheDocument();
+
+    const addCard = screen.getByText(/add card/i);
+    expect(addCard).toBeInTheDocument();
+
+    const home = screen.getByText(/home/i);
+    expect(home).toBeInTheDocument();
   });
 });

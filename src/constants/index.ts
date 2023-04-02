@@ -14,4 +14,4 @@ export enum CAR_PAYMENT_TYPE {
   LEASING = 'leasing',
 }
 
-export const SUPPORTED_FILE_NAMES = ['jpg', 'jpeg', 'png'];
+export const SUPPORTED_FILE_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];

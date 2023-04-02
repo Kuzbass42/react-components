@@ -15,7 +15,7 @@ const CardList: React.FunctionComponent<CardListProps> = ({ cards, filter = '' }
       {!cards || (cards.length === 0 && <span className="no-card">There is no any card yet</span>)}
       {cards
         .filter(({ model, brand }) => {
-          return searchString(model, filter, true) || searchString(brand, filter, true);
+          return searchString(model, filter) || searchString(brand, filter);
         })
         .map((car) => (
           <Card key={car.id} car={car} />
